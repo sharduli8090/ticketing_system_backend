@@ -1,0 +1,19 @@
+{
+  "name": "ticketing_system_backend",
+  "version": "1.0.0",
+  "description": "This is the backend code base of ticketing system.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sharduli Pandey",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "nodemon": "^3.1.0"
+  }
+}
