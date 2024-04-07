@@ -1,9 +1,6 @@
 import { admindatacollection } from "../../config.js";
 
-export class TestController {
-  async all(request, response, next) {
-    return { test: "Test Connection Successfull" };
-  }
+export class TestController { 
   async one(request, response, next) {
     try {
       // Retrieve all documents from the collection

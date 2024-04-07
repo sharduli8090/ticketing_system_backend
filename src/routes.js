@@ -9,14 +9,6 @@ export const Routes = [
     route: "/",
     auth: false,
     controller: TestController,
-    action: "all",
-    validation: [],
-  },
-  {
-    method: "get",
-    route: "/mongodbtest",
-    auth: false,
-    controller: TestController,
     action: "one",
     validation: [],
   },
@@ -39,7 +31,7 @@ export const Routes = [
   {
     method: "post",
     route: "/employee/createticket",
-    auth: false,
+    auth: true,
     controller: EmployeeController,
     action: "createTicket",
     validation: [],
@@ -47,7 +39,7 @@ export const Routes = [
   {
     method: "post",
     route: "/admin/createemployee",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "createEmployee",
     validation: [],
@@ -55,7 +47,7 @@ export const Routes = [
   {
     method: "get",
     route: "/admin/getallemployee",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "getAllEmployee",
     validation: [],
@@ -63,7 +55,7 @@ export const Routes = [
   {
     method: "delete",
     route: "/admin/deleteallemployee",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "deleteAllEmployee",
     validation: [],
@@ -71,7 +63,7 @@ export const Routes = [
   {
     method: "delete",
     route: "/admin/deleteemployee/:id",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "deleteEmployee",
     validation: [],
@@ -79,7 +71,7 @@ export const Routes = [
   {
     method: "delete",
     route: "/admin/deleteticket/:id",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "deleteTicket",
     validation: [],
@@ -87,7 +79,7 @@ export const Routes = [
   {
     method: "delete",
     route: "/admin/deleteallticket",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "deleteAllTicket",
     validation: [],
@@ -95,7 +87,7 @@ export const Routes = [
   {
     method: "get",
     route: "/admin/getallticket",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "getAllTicket",
     validation: [],
@@ -103,7 +95,7 @@ export const Routes = [
   {
     method: "put",
     route: "/admin/approvedenyticket/:id",
-    auth: false,
+    auth: true,
     controller: AdminController,
     action: "approveDenyTicket",
     validation: [],
@@ -111,7 +103,7 @@ export const Routes = [
   {
     method: "put",
     route: "/employee/closeticket/:id",
-    auth: false,
+    auth: true,
     controller: EmployeeController,
     action: "closeTicket",
     validation: [],
