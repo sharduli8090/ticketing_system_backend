@@ -23,7 +23,15 @@ Routes.forEach((route) => {
         next(new Error("Not authorized"));
         return;
       }
-      if (route.auth) {
+      if (route.auth && route.controller === "EmployeeController") {
+        try {
+          const decoded = jwt.verify(token, process.env.EMPSECRET);
+          req.id = decoded.id;
+        } catch (error) {
+          next(error);
+          return;
+        }
+      } else if (route.auth && route.controller === "AdminController") {
         try {
           const decoded = jwt.verify(token, process.env.SECRET);
           req.id = decoded.id;
