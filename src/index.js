@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import { Routes } from "./routes.js";
 import { validationResult } from "express-validator";
 import { APP_PORT } from "./config.js";
+import jwt from "jsonwebtoken";
 
 function handleError(err, _req, res, _next) {
   res.status(err.statusCode || 500).send(err.message);
@@ -17,40 +18,40 @@ Routes.forEach((route) => {
     route.route,
     ...route.validation,
     async (req, res, next) => {
-      
-        const token = req.headers.authorization?.split(" ")[1];
-        if (route.auth && !token) {
-          res.status(401).json({ error: "Not authorized" });
-          return;
-        }   
-        if (route.auth) {
+      const token = req.headers.authorization?.split(" ")[1];
+      if (route.auth && !token) {
+        next(new Error("Not authorized"));
+        return;
+      }
+      if (route.auth) {
         try {
           const decoded = jwt.verify(token, process.env.SECRET);
-          req.id = decoded.id;   
+          req.id = decoded.id;
         } catch (error) {
-          res.status(401).json({ error: "Unauthorized" });
+          next(error);
           return;
         }
-        }
-  
-        try {
-          const errors = validationResult(req);
-          if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-          }
-  
-          const result = await new (route.controller  )()[route.action](
-            req,
-            res,
-            next
-          );
-          res.json(result);
-        } catch (err) {
-          next(err);
-        }
       }
-    );
-  });
+
+      try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          next(new Error("Validation failed")); // Pass error for handling
+          return;
+        }
+
+        const result = await new route.controller()[route.action](
+          req,
+          res,
+          next
+        );
+        //   res.json(result);
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
+});
 app.use(handleError);
 
 app.listen(APP_PORT, () => {
