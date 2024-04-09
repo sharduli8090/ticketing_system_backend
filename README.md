@@ -8,7 +8,7 @@ Run `npm start` for a dev server. Base URL is `http://localhost:3000/` .
 
 ## Hosted Link
 
-This project is hosted on Renderr.com. [HostedLink]("https://ticketing-system-backend-saom.onrender.com/")
+This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-backend-saom.onrender.com/`
 
 <hr>
 
