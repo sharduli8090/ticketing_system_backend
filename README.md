@@ -103,7 +103,47 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
 
 ### Employee APIs
 
-    - Params :
-    - Body :
-    - Response : statuscode , message , data
-    - Endpoints :
+1. Login
+
+   - Params : No params
+   - Body : email , password
+   - Response : statuscode , message , data
+   - Endpoints : api/employee/login
+
+2. Get Employee
+
+   - Params : employee id
+   - Body : No body
+   - Response : statuscode , message , data
+   - Endpoints : api/employee/getemployee?id=/:id
+
+3. Get Ticket
+
+   - Params : ticket id
+   - Body : empId
+   - Response : statuscode , message , data
+   - Endpoints : api/employee/getticket?id=/:id
+
+4. Create Ticket
+
+   - Params : No params
+   - Body : ticketName , ticketDescription , empId , empName , ticketDepartment
+   - Response : statuscode , message , data
+   - Endpoints : api/employee/createticket
+
+5. Close Ticket
+
+   - Params : ticket id
+   - Body : empId
+   - Response : statuscode , message , data
+   - Endpoints : api/employee/closeticket?id=/:id
+
+6. Approve or Deny Ticket
+   - Params : ticket id
+   - Body : empId , ticketComments , ticketStatus
+   - Response : statuscode , message , data
+   - Endpoints : api/employee/approvedenyticket?id=/:id
+
+<hr>
+
+# Total 18 APIs
