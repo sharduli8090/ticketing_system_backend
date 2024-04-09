@@ -21,83 +21,83 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : No params
    - Body : email , password
    - Response : statuscode , message , data
-   - Endpoints : api/admin/login
+   - Endpoints : `api/admin/login`
 
 2. Create Employee
 
    - Params : No params
    - Body : email , password , empName , empPosition , empDateOfBirth , empDepartment , empGender
    - Response : statuscode , message , data (id , data)
-   - Endpoints : api/admin/createemployee
+   - Endpoints : `api/admin/createemployee`
 
 3. Get All Employees
 
    - Params : No params
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/getallemployee
+   - Endpoints : `api/admin/getallemployee`
 
 4. Get One Employee
 
    - Params : employee id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/getemployee?id=/:id
+   - Endpoints : `api/admin/getemployee?id=/:id`
 
 5. Delete All Employee
 
    - Params : No params
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/deleteallemployee
+   - Endpoints : `api/admin/deleteallemployee`
 
 6. Delete One Employee
 
    - Params : employee id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/deleteemployee?id=/:id
+   - Endpoints : `api/admin/deleteemployee?id=/:id`
 
 7. Get All Tickets
 
    - Params : No params
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/getallticket
+   - Endpoints : `api/admin/getallticket`
 
 8. Get One Ticket
 
    - Params : ticket id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/getticket?id=/:id
+   - Endpoints : `api/admin/getticket?id=/:id`
 
 9. Delete All Tickets
 
    - Params : No params
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/admin/deleteallticket
+   - Endpoints : `api/admin/deleteallticket`
 
 10. Delete one Ticket
 
     - Params : ticket id
     - Body : No body
     - Response : statuscode , message , data
-    - Endpoints : api/admin/deleteticket?id=/:id
+    - Endpoints : `api/admin/deleteticket?id=/:id`
 
 11. Approve or Deny Ticket
 
     - Params : ticket id
     - Body : ticketStatus , ticketComments
     - Response : statuscode , message , data
-    - Endpoints : api/admin/appprovedenyticket?id=/:id
+    - Endpoints : `api/admin/appprovedenyticket?id=/:id`
 
 12. Update One Employee
     - Params : employee id
     - Body : can come : email , password , empName , empPosition , empDateOfBirth , empDepartment , empGender
     - Response : statuscode , message , data
-    - Endpoints : api/admin/updateemployee?id=/:id
+    - Endpoints : `api/admin/updateemployee?id=/:id`
 
 <hr>
 
@@ -108,41 +108,41 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : No params
    - Body : email , password
    - Response : statuscode , message , data
-   - Endpoints : api/employee/login
+   - Endpoints : `api/employee/login`
 
 2. Get Employee
 
    - Params : employee id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : api/employee/getemployee?id=/:id
+   - Endpoints : `api/employee/getemployee?id=/:id`
 
 3. Get Ticket
 
    - Params : ticket id
    - Body : empId
    - Response : statuscode , message , data
-   - Endpoints : api/employee/getticket?id=/:id
+   - Endpoints : `api/employee/getticket?id=/:id`
 
 4. Create Ticket
 
    - Params : No params
    - Body : ticketName , ticketDescription , empId , empName , ticketDepartment
    - Response : statuscode , message , data
-   - Endpoints : api/employee/createticket
+   - Endpoints : `api/employee/createticket`
 
 5. Close Ticket
 
    - Params : ticket id
    - Body : empId
    - Response : statuscode , message , data
-   - Endpoints : api/employee/closeticket?id=/:id
+   - Endpoints : `api/employee/closeticket?id=/:id`
 
 6. Approve or Deny Ticket
    - Params : ticket id
    - Body : empId , ticketComments , ticketStatus
    - Response : statuscode , message , data
-   - Endpoints : api/employee/approvedenyticket?id=/:id
+   - Endpoints : `api/employee/approvedenyticket?id=/:id`
 
 <hr>
 
