@@ -42,7 +42,7 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : employee id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : `api/admin/getemployee?id=/:id`
+   - Endpoints : `api/admin/getemployee/:id`
 
 5. Delete All Employee
 
@@ -56,7 +56,7 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : employee id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : `api/admin/deleteemployee?id=/:id`
+   - Endpoints : `api/admin/deleteemployee/:id`
 
 7. Get All Tickets
 
@@ -70,7 +70,7 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : ticket id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : `api/admin/getticket?id=/:id`
+   - Endpoints : `api/admin/getticket/:id`
 
 9. Delete All Tickets
 
@@ -84,20 +84,20 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
     - Params : ticket id
     - Body : No body
     - Response : statuscode , message , data
-    - Endpoints : `api/admin/deleteticket?id=/:id`
+    - Endpoints : `api/admin/deleteticket/:id`
 
 11. Approve or Deny Ticket
 
     - Params : ticket id
     - Body : ticketStatus , ticketComments
     - Response : statuscode , message , data
-    - Endpoints : `api/admin/appprovedenyticket?id=/:id`
+    - Endpoints : `api/admin/appprovedenyticket/:id`
 
 12. Update One Employee
     - Params : employee id
     - Body : can come : email , password , empName , empPosition , empDateOfBirth , empDepartment , empGender
     - Response : statuscode , message , data
-    - Endpoints : `api/admin/updateemployee?id=/:id`
+    - Endpoints : `api/admin/updateemployee/:id`
 
 <hr>
 
@@ -115,19 +115,19 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : employee id
    - Body : No body
    - Response : statuscode , message , data
-   - Endpoints : `api/employee/getemployee?id=/:id`
+   - Endpoints : `api/employee/getemployee/:id`
 
 3. Get Ticket
 
    - Params : ticket id
    - Body : empId
    - Response : statuscode , message , data
-   - Endpoints : `api/employee/getticket?id=/:id`
+   - Endpoints : `api/employee/getticket/:id`
 
 4. Create Ticket
 
    - Params : No params
-   - Body : ticketName , ticketDescription , empId , empName , ticketDepartment
+   - Body : ticketName , ticketDescription , empId , ticketDepartment
    - Response : statuscode , message , data
    - Endpoints : `api/employee/createticket`
 
@@ -136,14 +136,29 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Params : ticket id
    - Body : empId
    - Response : statuscode , message , data
-   - Endpoints : `api/employee/closeticket?id=/:id`
+   - Endpoints : `api/employee/closeticket/:id`
 
 6. Approve or Deny Ticket
+
    - Params : ticket id
    - Body : empId , ticketComments , ticketStatus
    - Response : statuscode , message , data
-   - Endpoints : `api/employee/approvedenyticket?id=/:id`
+   - Endpoints : `api/employee/approvedenyticket/:id`
+
+7. Get Tickets In My Name
+
+   - Params : No params
+   - Body : empId
+   - Response : statuscode , message , data
+   - Endpoints : `api/employee/getticketinmyname`
+
+8. Get Tickets Raised By Me
+
+   - Params : No params
+   - Body : empId
+   - Response : statuscode , message , data
+   - Endpoints : `api/employee/getticketraisedbyme`
 
 <hr>
 
-# Total 18 APIs
+# Total 20 APIs

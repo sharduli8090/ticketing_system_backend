@@ -3,8 +3,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 export const APP_PORT = process.env.PORT || 3000;
 
-const uri =
-  "mongodb+srv://shardulipandey8090:kS8fe6t7Otu9wlvx@cluster-ticketing.ksgiaj8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-Ticketing";
+const uri = process.env.url; 
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {

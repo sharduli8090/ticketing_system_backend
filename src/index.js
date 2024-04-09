@@ -53,7 +53,6 @@ Routes.forEach((route) => {
           res,
           next
         );
-        //   res.json(result);
       } catch (err) {
         next(err);
       }

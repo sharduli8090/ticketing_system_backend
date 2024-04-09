@@ -11,28 +11,25 @@ import argon2 from "argon2";
 export class AdminController {
   async login(request, response, next) {
     try {
-      const data = await admindatacollection.findOne();
-      const password = request.body.password;
-      // const isValidPassword = await argon2.verify(data.password, password);
-      console.log(data);
-      console.log(request.body.email);
-      console.log(password);
-      if (
-        data &&
-        data.email === request.body.email &&
-        data.password === password
-      ) {
-        const token = jwt.sign({ id: data._id }, process.env.SECRET, {
-          expiresIn: "1h",
+      let data = await admindatacollection.findOne();
+      let password = request.body.password;
+      let email = request.body.email;
+      if (data && data.email === email && data.password === password) {
+        let token = jwt.sign({ id: "admin" }, process.env.SECRET, {
+          expiresIn: "2h",
         });
-        response.status(200).json({
-          id: data._id,
-          message: "Login Successfull",
-          token: token,
+        response.json({
+          statuscode: 200,
+          message: "Login Successfull! Welcome Admin.",
+          data: { id: "admin", token: token },
         });
         return;
       } else {
-        response.json({ statuscode: 401, message: "Invalid Credentials" });
+        response.json({
+          statuscode: 401,
+          message: "Invalid Credentials",
+          data: "No Data",
+        });
         return;
       }
     } catch (error) {
@@ -43,41 +40,64 @@ export class AdminController {
 
   async createEmployee(request, response, next) {
     try {
-      const {
-        email,
-        password,
-        empName,
-        empPosition,
-        empGender,
-        empDateOfBirth,
-      } = request.body;
-      if (!email || !password || !empName || !empPosition || !empDateOfBirth) {
-        return response
-          .status(400)
-          .json({ message: "Missing required fields" });
+      let { email, password, empName, empDateOfBirth } = request.body;
+      let { empDepartment, empPosition } = request.body;
+      if (
+        !email ||
+        !password ||
+        !empName ||
+        !empPosition ||
+        !empDateOfBirth ||
+        !empDepartment
+      ) {
+        response.json({
+          statuscode: 400,
+          message: "Missing required fields",
+          data: "No Data",
+        });
+        return;
       }
-      const existingEmployee = await employeedatacollection.findOne({ email });
-      if (existingEmployee) {
-        return response
-          .status(400)
-          .json({ message: "Employee with this email already exists" });
-      }
-      const id = shortid.generate();
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1; // Months are zero-indexed (January is 0)
-      const day = now.getDate();
+      let empGender = request.body.empGender || "Not Specified";
 
-      const formattedDate = `${year}-${month.toString().padStart(2, "0")}-${day
+      let existingEmployee = await employeedatacollection.findOne({ email });
+      if (existingEmployee) {
+        response.json({
+          statuscode: 400,
+          message: "Employee with this email already exists",
+          data: "No Data",
+        });
+        return;
+      }
+      empDepartment = empDepartment.toLowerCase();
+      empPosition = empPosition.toLowerCase();
+      if (
+        empDepartment !== "hr" &&
+        empDepartment !== "it" &&
+        empDepartment !== "finance" &&
+        empDepartment !== "admin"
+      ) {
+        response.json({
+          statuscode: 400,
+          message: "Department should be HR, IT, Finance or Admin",
+          data: "No Data",
+        });
+        return;
+      }
+      let id = shortid.generate();
+      let now = new Date();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1; // Months are zero-indexed (January is 0)
+      let day = now.getDate();
+
+      let formattedDate = `${year}-${month.toString().padStart(2, "0")}-${day
         .toString()
         .padStart(2, "0")}`;
-      // console.log(formattedDate); // Output: YYYY-MM-DD format
-      const empDateOfJoining = formattedDate;
-      // console.log(empDateOfJoining);
-      const empNoOfTicketsRaised = 0;
-      const empTicketsRaisedIds = [];
-      const hashedpassword = await argon2.hash(password);
-      const data = await employeedatacollection.insertOne({
+      let empDateOfJoining = formattedDate;
+      let empNoOfTicketsRaised = 0;
+      let empTicketsRaisedIds = [];
+      let hashedpassword = await argon2.hash(password);
+
+      let data = await employeedatacollection.insertOne({
         id,
         email,
         password: hashedpassword,
@@ -88,11 +108,12 @@ export class AdminController {
         empDateOfJoining,
         empNoOfTicketsRaised,
         empTicketsRaisedIds,
+        empDepartment,
       });
-      response.status(200).json({
+      response.json({
+        statuscode: 200,
         message: "Employee Created Successfully",
-        id: id,
-        data: data,
+        data: { id: id, data },
       });
       return;
     } catch (error) {
@@ -103,14 +124,44 @@ export class AdminController {
 
   async getAllEmployee(request, response, next) {
     try {
-      const data = await employeedatacollection.find().toArray();
-      const filteredData = data.map((employee) => {
-        delete employee.password; // Remove password using delete
+      let data = await employeedatacollection.find().toArray();
+      let filteredData = data.map((employee) => {
+        delete employee.password;
+        delete employee._id;
         return employee;
       });
-      response
-        .status(200)
-        .json({ message: "All Employees", data: filteredData });
+      response.json({
+        statuscode: 200,
+        message: "All Employees",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  async getEmployee(request, response, next) {
+    try {
+      let data = await employeedatacollection.findOne({
+        id: request.params.id,
+      });
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message: "Employee not found",
+          data: "No Data",
+        });
+        return;
+      }
+      delete data.password; // Remove password using delete
+      delete data._id; // Remove _id using delete
+      response.json({
+        statuscode: 200,
+        message: "Employee Found",
+        data: data,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -120,11 +171,13 @@ export class AdminController {
 
   async deleteAllEmployee(request, response, next) {
     try {
-      const data = await employeedatacollection.deleteMany();
+      let data = await employeedatacollection.deleteMany();
       await ticketdatacollection.deleteMany();
-      response
-        .status(200)
-        .json({ message: "All Employees Deleted", data: data });
+      response.json({
+        statuscode: 200,
+        message: "All Employees Deleted",
+        data: data,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -134,14 +187,28 @@ export class AdminController {
 
   async deleteEmployee(request, response, next) {
     try {
+      let id = request.params.id;
       let data = await employeedatacollection.findOne({
-        id: request.params.id,
+        id: id,
       });
-      const ticketIds = data.empTicketsRaisedIds;
-      console.log(ticketIds);
-      await ticketdatacollection.deleteMany({ id: { $in: ticketIds } });
-      data = await employeedatacollection.deleteOne({ id: request.params.id });
-      response.status(200).json({ message: "Employee Deleted", data: data });
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message: "Employee not found",
+          data: "No Data",
+        });
+        return;
+      }
+      let ticketIds = data.empTicketsRaisedIds;
+      if (ticketIds.length > 0) {
+        await ticketdatacollection.deleteMany({ id: { $in: ticketIds } });
+      }
+      data = await employeedatacollection.deleteOne({ id: id });
+      response.json({
+        statuscode: 200,
+        message: "Employee Deleted",
+        data: data,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -151,8 +218,43 @@ export class AdminController {
 
   async getAllTicket(request, response, next) {
     try {
-      const data = await ticketdatacollection.find().toArray();
-      response.status(200).json({ message: "All Tickets", data: data });
+      let data = await ticketdatacollection.find().toArray();
+
+      let filteredData = data.map((ticket) => {
+        delete ticket._id;
+        return ticket;
+      });
+      response.json({
+        statuscode: 200,
+        message: "All Tickets",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  async getTicket(request, response, next) {
+    try {
+      let data = await ticketdatacollection.findOne({
+        id: request.params.id,
+      });
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message: "Ticket not found",
+          data: "No Data",
+        });
+        return;
+      }
+      delete data._id;
+      response.json({
+        statuscode: 200,
+        message: "Ticket Found",
+        data: data,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -162,8 +264,8 @@ export class AdminController {
 
   async deleteAllTicket(request, response, next) {
     try {
-      const data = await ticketdatacollection.deleteMany();
-      const employeeData = await employeedatacollection.find().toArray();
+      let data = await ticketdatacollection.deleteMany();
+      let employeeData = await employeedatacollection.find().toArray();
       employeeData.forEach(async (employee) => {
         await employeedatacollection.updateOne(
           { id: employee.id },
@@ -175,7 +277,12 @@ export class AdminController {
           }
         );
       });
-      response.status(200).json({ message: "All Tickets Deleted", data: data });
+
+      response.json({
+        statuscode: 200,
+        message: "All Tickets Deleted",
+        data: data,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -185,25 +292,39 @@ export class AdminController {
 
   async deleteTicket(request, response, next) {
     try {
+      let ticketId = request.params.id;
       let data = await ticketdatacollection.findOne({
-        id: request.params.id,
+        id: ticketId,
       });
-      const employeeData = await employeedatacollection.findOne({
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message: "Ticket not found",
+          data: "No Data",
+        });
+        return;
+      }
+
+      let employeeData = await employeedatacollection.findOne({
         id: data.ticketRaisedById,
       });
-      employeeData.empNoOfTicketsRaised -= 1;
-      employeeData.empTicketsRaisedIds =
-        employeeData.empTicketsRaisedIds.filter(
-          (id) => id !== request.params.id
+      if (employeeData) {
+        employeeData.empNoOfTicketsRaised -= 1;
+        employeeData.empTicketsRaisedIds =
+          employeeData.empTicketsRaisedIds.filter((id) => id !== ticketId);
+        await employeedatacollection.updateOne(
+          { id: data.ticketRaisedById },
+          {
+            $set: employeeData,
+          }
         );
-      await employeedatacollection.updateOne(
-        { id: data.ticketRaisedById },
-        {
-          $set: employeeData,
-        }
-      );
-      data = await ticketdatacollection.deleteOne({ id: request.params.id });
-      response.status(200).json({ message: "Ticket Deleted", data: data });
+      }
+      data = await ticketdatacollection.deleteOne({ id: ticketId });
+      response.json({
+        statuscode: 200,
+        message: "Ticket Deleted",
+        data: data,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -213,43 +334,167 @@ export class AdminController {
 
   async approveDenyTicket(request, response, next) {
     try {
-      const data = await ticketdatacollection.findOne({
-        id: request.params.id,
+      let { ticketComments, ticketStatus } = request.body;
+      let id = request.params.id;
+      let data = await ticketdatacollection.findOne({
+        id: id,
       });
       if (!data) {
-        return response.status(404).json({ message: "Ticket not found" });
+        response.json({
+          statuscode: 404,
+          message: "Ticket not found",
+          data: "No Data",
+        });
+        return;
       }
-      if (data.status === "approved") {
-        return response
-          .status(400)
-          .json({ message: "Ticket already approved" });
+      if (data.ticketStatus === "approved") {
+        response.json({
+          statuscode: 400,
+          message: "Ticket already approved",
+          data: "No Data",
+        });
+        return;
       }
-      if (data.status === "denied") {
-        return response.status(400).json({ message: "Ticket already denied" });
+      if (data.ticketStatus === "denied") {
+        response.json({
+          statuscode: 400,
+          message: "Ticket already denied",
+          data: "No Data",
+        });
+        return;
+      }
+      if (!ticketStatus) {
+        response.json({
+          statuscode: 400,
+          message: "Missing required fields",
+          data: "No Data",
+        });
+      }
+      if (ticketStatus !== "approved" && ticketStatus !== "denied") {
+        response.json({
+          statuscode: 400,
+          message: "Invalid ticket status",
+          data: "No Data",
+        });
+        return;
       }
 
-      console.log(data);
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1; // Months are zero-indexed (January is 0)
-      const day = now.getDate();
+      if (ticketStatus === "denied" && !ticketComments) {
+        response.json({
+          statuscode: 400,
+          message: "Missing ticket comments",
+          data: "No Data",
+        });
+        return;
+      }
+      let ticketCommentsFunc = "";
+      if (ticketStatus === "approved" && !ticketComments) {
+        ticketCommentsFunc = "Ticket approved";
+      }
+      let now = new Date();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1; // Months are zero-indexed (January is 0)
+      let day = now.getDate();
 
-      const formattedDate = `${year}-${month.toString().padStart(2, "0")}-${day
+      let formattedDate = `${year}-${month.toString().padStart(2, "0")}-${day
         .toString()
         .padStart(2, "0")}`;
-      const updatedData = await ticketdatacollection.updateOne(
-        { id: request.params.id },
+      let updatedData = await ticketdatacollection.updateOne(
+        { id: id },
         {
           $set: {
-            ticketStatus: request.body.ticketStatus,
+            ticketStatus: ticketStatus,
             dateOfCompletion: formattedDate,
-            ticketComments: request.body.ticketComments,
+            ticketComments: ticketComments || ticketCommentsFunc,
           },
         }
       );
-      response
-        .status(200)
-        .json({ message: "Ticket updated", data: updatedData });
+      response.json({
+        statuscode: 200,
+        message: "Ticket updated",
+        data: updatedData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  async updateEmployee(request, response, next) {
+    try {
+      let empId = request.params.id;
+      let employee = await employeedatacollection.findOne({ id: empId });
+      if (!employee) {
+        response.json({
+          statuscode: 400,
+          message: "Employee not found",
+          data: "No Data",
+        });
+        return;
+      }
+      if (request.body.email) {
+        let existingEmployee = await employeedatacollection.findOne({
+          email: request.body.email,
+        });
+        if (existingEmployee && existingEmployee.id !== empId) {
+          response.json({
+            statuscode: 400,
+            message: "Employee with this email already exists",
+            data: "No Data",
+          });
+          return;
+        }
+      }
+      if (request.body.password) {
+        let isValidPassword = await argon2.verify(
+          employee.password,
+          request.body.password
+        );
+        if (!isValidPassword) {
+          let hashedpassword = await argon2.hash(request.body.password);
+          request.body.password = hashedpassword;
+        } else {
+          response.json({
+            statuscode: 400,
+            message: "Old password is equal to new password",
+            data: "No Data",
+          });
+          return;
+        }
+      }
+      if (request.body.empDepartment) {
+        let dept = request.body.empDepartment;
+        dept = dept.toLowerCase();
+        if (
+          dept !== "hr" &&
+          dept !== "it" &&
+          dept !== "finance" &&
+          dept !== "admin"
+        ) {
+          response.json({
+            statuscode: 400,
+            message: "Department should be HR, IT, Finance or Admin",
+            data: "No Data",
+          });
+          return;
+        }
+        request.body.empDepartment = dept;
+      }
+      if (request.body.empPosition) {
+        request.body.empPosition = request.body.empPosition.toLowerCase();
+      }
+
+      let result = await employeedatacollection.updateOne(
+        { id: empId },
+        { $set: request.body }
+      );
+
+      response.json({
+        statuscode: 200,
+        message: "Profile updated successfully",
+        data: result,
+      });
       return;
     } catch (error) {
       console.error("Error fetching data:", error);
