@@ -158,7 +158,7 @@ export const Routes = [
     validation: [],
   },
   {
-    method: "get",
+    method: "post",
     route: "/api/sendqueryfeedback",
     auth: false,
     controller: GeneralController,
