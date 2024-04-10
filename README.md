@@ -99,6 +99,18 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
     - Response : statuscode , message , data
     - Endpoints : `api/admin/updateemployee/:id`
 
+13. Get Employee Department Wise
+    - Params : No params
+    - Body : dept
+    - Response : statuscode , message , data
+    - Endpoints : `api/admin/getdeptwiseemployee`
+
+14. Get Ticket Department Wise
+    - Params : No params
+    - Body : dept
+    - Response : statuscode , message , data
+    - Endpoints : `api/admin/getdeptwiseticket`
+
 <hr>
 
 ### Employee APIs

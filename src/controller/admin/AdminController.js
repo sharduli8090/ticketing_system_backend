@@ -555,7 +555,7 @@ export class AdminController {
           });
           return;
         }
-      let data = await ticketdatacollection.find({department:dept}).toArray();
+      let data = await ticketdatacollection.find({ticketDepartment:dept}).toArray();
       let filteredData = data.map((ticket) => { 
         delete ticket._id;
         return ticket;
