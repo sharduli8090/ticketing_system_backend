@@ -39,8 +39,8 @@ Routes.forEach((route) => {
         try {
           const decoded = jwt.verify(token, process.env.SECRET);
           req.id = decoded.id;          
-          if(!decoded){
-            next(new Error("Not authorized Admin"));
+          if(decoded){
+            next(new Error(decoded));
             return;
           }
         } catch (error) {
