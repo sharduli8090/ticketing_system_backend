@@ -42,7 +42,7 @@ Routes.forEach((route) => {
         }
 
         // **Restrict Access Based on Token Type and Controller:**
-        if (allowedController !== route.controller) {
+        if (allowedController == route.controller) {
           return next(new Error("Forbidden: Access denied")); // Handle unauthorized access attempts
         }
 
