@@ -506,6 +506,20 @@ export class AdminController {
   async getDeptWiseEmployee(request, response, next) {
     try {
       let dept = request.body.dept;
+      dept = dept.toLowerCase();
+        if (
+          dept !== "hr" &&
+          dept !== "it" &&
+          dept !== "finance" &&
+          dept !== "admin"
+        ) {
+          response.json({
+            statuscode: 400,
+            message: "Department should be HR, IT, Finance or Admin",
+            data: "No Data",
+          });
+          return;
+        }
       let data = await employeedatacollection.find({empDepartment:dept}).toArray();
       let filteredData = data.map((employee) => {
         delete employee.password;
@@ -527,6 +541,20 @@ export class AdminController {
   async getDeptWiseTicket(request, response, next) {
     try {
       let dept = request.body.dept;
+      dept = dept.toLowerCase();
+        if (
+          dept !== "hr" &&
+          dept !== "it" &&
+          dept !== "finance" &&
+          dept !== "admin"
+        ) {
+          response.json({
+            statuscode: 400,
+            message: "Department should be HR, IT, Finance or Admin",
+            data: "No Data",
+          });
+          return;
+        }
       let data = await ticketdatacollection.find({department:dept}).toArray();
       let filteredData = data.map((ticket) => { 
         delete ticket._id;
