@@ -20,8 +20,14 @@ Routes.forEach((route) => {
     async (req, res, next) => {
       const token = req.headers.authorization?.split(" ")[1];
       if (route.auth && !token) {
-        next(new Error("Not authorized"));
-        return;
+         const decoded = jwt.verify("token", process.env.SECRET);
+        req.id = decoded.id;          
+        if(decoded){
+          next(new Error(decoded));
+          return;
+        }
+        // next(new Error("Not authorized"));
+        // return;
       }
       if (route.auth && route.controller === "EmployeeController") {
         try {
