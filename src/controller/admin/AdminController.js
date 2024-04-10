@@ -16,7 +16,7 @@ export class AdminController {
       let password = request.body.password;
       let email = request.body.email;
       if (data && data.email === email && data.password === password) {
-        let token = jwt.sign({ id: "admin" }, process.env.SECRET, {
+        let token = jwt.sign({ id: "admin", type: "admin" }, process.env.SECRET, {
           expiresIn: "2h",
         });
         response.json({

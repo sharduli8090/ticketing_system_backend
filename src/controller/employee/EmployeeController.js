@@ -13,7 +13,7 @@ export class EmployeeController {
       if (data) {
         let isValidPassword = await argon2.verify(data.password, password);
         if (isValidPassword && data.email === email) {
-          let token = jwt.sign({ id: data.id }, process.env.SECRET, {
+          let token = jwt.sign({ id: data.id, type:"employee" }, process.env.SECRET, {
             expiresIn: "2h",
           });
           response.json({

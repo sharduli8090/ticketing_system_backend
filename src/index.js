@@ -24,14 +24,26 @@ Routes.forEach((route) => {
       }
 
       if (route.auth) {
-        let decodedToken;
+        let decodedToken, allowedController;
         try {
           const secretKey = route.controller === "EmployeeController"
-            ? process.env.EMPSECRET
-            : process.env.SECRET; // Use appropriate secret based on controller
+            ? process.env.EMPSECRET // Use appropriate secret based on controller (if applicable)
+            : process.env.SECRET;
           decodedToken = jwt.verify(token, secretKey);
+
+          // **Enforce Token Type Check (assuming a 'type' property in payload):**
+          if (!decodedToken.type || (decodedToken.type !== "admin" && decodedToken.type !== "employee")) {
+            throw new Error("Invalid or unauthorized token");
+          }
+
+          allowedController = decodedToken.type === "admin" ? "AdminController" : "EmployeeController"; // Determine allowed controller based on token type
         } catch (error) {
           return next(new Error("Invalid token")); // Handle invalid tokens gracefully
+        }
+
+        // **Restrict Access Based on Token Type and Controller:**
+        if (allowedController !== route.controller) {
+          return next(new Error("Forbidden: Access denied")); // Handle unauthorized access attempts
         }
 
         req.user = decodedToken; // Attach decoded user information to the request object for further use
