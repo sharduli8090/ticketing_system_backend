@@ -20,23 +20,13 @@ Routes.forEach((route) => {
     async (req, res, next) => {
       const token = req.headers.authorization?.split(" ")[1];
       if (route.auth && !token) {
-         const decoded = jwt.verify("token", process.env.SECRET);
-        req.id = decoded.id;          
-        if(decoded){
-          next(new Error(decoded));
-          return;
-        }
-        // next(new Error("Not authorized"));
-        // return;
+        next(new Error("Not authorized"));
+        return;
       }
       if (route.auth && route.controller === "EmployeeController") {
         try {
           const decoded = jwt.verify(token, process.env.EMPSECRET);
           req.id = decoded.id;
-          if(!decoded){
-            next(new Error("Not authorized Employee"));
-            return;
-          }
         } catch (error) {
           next(error);
           return;
@@ -44,11 +34,7 @@ Routes.forEach((route) => {
       } else if (route.auth && route.controller === "AdminController") {
         try {
           const decoded = jwt.verify(token, process.env.SECRET);
-          req.id = decoded.id;          
-          if(decoded){
-            next(new Error(decoded));
-            return;
-          }
+          req.id = decoded.id;
         } catch (error) {
           next(error);
           return;
