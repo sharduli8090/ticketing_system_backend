@@ -27,6 +27,10 @@ Routes.forEach((route) => {
         try {
           const decoded = jwt.verify(token, process.env.EMPSECRET);
           req.id = decoded.id;
+          if(!decoded){
+            next(new Error("Not authorized Employee"));
+            return;
+          }
         } catch (error) {
           next(error);
           return;
@@ -34,7 +38,11 @@ Routes.forEach((route) => {
       } else if (route.auth && route.controller === "AdminController") {
         try {
           const decoded = jwt.verify(token, process.env.SECRET);
-          req.id = decoded.id;
+          req.id = decoded.id;          
+          if(!decoded){
+            next(new Error("Not authorized Admin"));
+            return;
+          }
         } catch (error) {
           next(error);
           return;
