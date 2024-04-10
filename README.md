@@ -111,6 +111,12 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
     - Response : statuscode , message , data
     - Endpoints : `api/admin/getdeptwiseticket`
 
+15. Get Query
+    - Params : No params
+    - Body : No body
+    - Response : statuscode , message , data
+    - Endpoints : `api/admin/getquery`
+
 <hr>
 
 ### Employee APIs
@@ -184,4 +190,4 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
    - Endpoints : `api/sendqueryfeedback`
 
 
-# Total 23 APIs
+# Total 24 APIs

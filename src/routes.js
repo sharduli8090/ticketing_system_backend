@@ -166,6 +166,14 @@ export const Routes = [
     validation: [],
   },
   {
+    method: "get",
+    route: "/api/admin/getquery",
+    auth: true,
+    controller: AdminController,
+    action: "getQuery",
+    validation: [],
+  },
+  {
     method: "put",
     route: "/api/admin/approvedenyticket/:id",
     auth: true,

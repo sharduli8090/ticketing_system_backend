@@ -2,6 +2,7 @@ import {
   admindatacollection,
   employeedatacollection,
   ticketdatacollection,
+  querydatacollection
 } from "../../config.js";
 import shortid from "shortid";
 import jwt from "jsonwebtoken";
@@ -572,5 +573,28 @@ export class AdminController {
     }
   }
 
+  
+  async getQuery(request, response, next) {
+    try {
+      let data = await querydatacollection.find().toArray();
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message: "Queries/Feedbacks not found",
+          data: "No Data",
+        });
+        return;
+      } 
+      response.json({
+        statuscode: 200,
+        message: "Found",
+        data: data,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
 
 }
