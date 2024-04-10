@@ -501,4 +501,48 @@ export class AdminController {
       next(error); // Handle errors by passing them to the next middleware
     }
   }
+
+
+  async getDeptWiseEmployee(request, response, next) {
+    try {
+      let dept = request.body.dept;
+      let data = await employeedatacollection.find({empDepartment:dept}).toArray();
+      let filteredData = data.map((employee) => {
+        delete employee.password;
+        delete employee._id;
+        return employee;
+      });
+      response.json({
+        statuscode: 200,
+        message: "All Employees department wise",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  async getDeptWiseTicket(request, response, next) {
+    try {
+      let dept = request.body.dept;
+      let data = await ticketdatacollection.find({department:dept}).toArray();
+      let filteredData = data.map((ticket) => { 
+        delete ticket._id;
+        return ticket;
+      });
+      response.json({
+        statuscode: 200,
+        message: "All Tickets department wise",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+
 }

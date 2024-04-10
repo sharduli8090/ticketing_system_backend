@@ -134,6 +134,22 @@ export const Routes = [
   },
   {
     method: "get",
+    route: "/api/admin/getdeptwiseticket",
+    auth: true,
+    controller: AdminController,
+    action: "getDeptWiseTicket",
+    validation: [],
+  },
+  {
+    method: "get",
+    route: "/api/admin/getdeptwiseemployee",
+    auth: true,
+    controller: AdminController,
+    action: "getDeptWiseEmployee",
+    validation: [],
+  },
+  {
+    method: "get",
     route: "/api/employee/getticketraisedbyme",
     auth: true,
     controller: EmployeeController,
