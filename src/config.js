@@ -17,6 +17,7 @@ let database = "";
 let admindatacollection = "";
 let employeedatacollection = "";
 let ticketdatacollection = "";
+let querydatacollection = "";
 
 // Error handling function for a more robust approach
 function handleError(error) {
@@ -32,6 +33,7 @@ async function run() {
     admindatacollection = database.collection("admin_data"); 
     employeedatacollection = database.collection("employee");
     ticketdatacollection = database.collection("ticket");
+    querydatacollection = database.collection("query");
     await client.db("ticketing_system").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
@@ -43,4 +45,4 @@ async function run() {
 
 run().catch(console.dir);
 
-export { database, admindatacollection, employeedatacollection, ticketdatacollection};
+export { database, admindatacollection, employeedatacollection, ticketdatacollection, querydatacollection};

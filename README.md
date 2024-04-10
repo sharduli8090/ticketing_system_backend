@@ -173,4 +173,15 @@ This project is hosted on Renderr.com. HostedLink- -> `https://ticketing-system-
 
 <hr>
 
-# Total 20 APIs
+### General APIs
+
+
+1. Send Query or Feedbacks
+
+   - Params : No params
+   - Body : name , query
+   - Response : statuscode , message , data
+   - Endpoints : `api/sendqueryfeedback`
+
+
+# Total 23 APIs

@@ -2,6 +2,7 @@ import { body, param } from "express-validator";
 import { TestController } from "./controller/test/TestController.js";
 import { AdminController } from "./controller/admin/AdminController.js";
 import { EmployeeController } from "./controller/employee/EmployeeController.js";
+import { GeneralController } from "./controller/general/GeneralController.js";
 
 export const Routes = [
   {
@@ -154,6 +155,14 @@ export const Routes = [
     auth: true,
     controller: EmployeeController,
     action: "getTicketRaisedByMe",
+    validation: [],
+  },
+  {
+    method: "get",
+    route: "/api/sendqueryfeedback",
+    auth: false,
+    controller: GeneralController,
+    action: "sendQueryFeedback",
     validation: [],
   },
   {
