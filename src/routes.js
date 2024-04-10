@@ -11,6 +11,7 @@ export const Routes = [
     auth: false,
     controller: TestController,
     action: "one",
+    type: "test",
     validation: [],
   },
   {
@@ -19,22 +20,7 @@ export const Routes = [
     auth: false,
     controller: AdminController,
     action: "login",
-    validation: [],
-  },
-  {
-    method: "post",
-    route: "/api/employee/login",
-    auth: false,
-    controller: EmployeeController,
-    action: "login",
-    validation: [],
-  },
-  {
-    method: "post",
-    route: "/api/employee/createticket",
-    auth: true,
-    controller: EmployeeController,
-    action: "createTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -43,6 +29,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "createEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -51,6 +38,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getAllEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -59,6 +47,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "deleteAllEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -67,6 +56,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "deleteEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -75,6 +65,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "deleteTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -83,6 +74,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "deleteAllTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -91,6 +83,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getAllTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -99,6 +92,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -107,6 +101,25 @@ export const Routes = [
     auth: true,
     controller: EmployeeController,
     action: "getEmployee",
+    type: "employee",
+    validation: [],
+  },
+  {
+    method: "post",
+    route: "/api/employee/login",
+    auth: false,
+    controller: EmployeeController,
+    action: "login",
+    type: "employee",
+    validation: [],
+  },
+  {
+    method: "post",
+    route: "/api/employee/createticket",
+    auth: true,
+    controller: EmployeeController,
+    action: "createTicket",
+    type: "employee",
     validation: [],
   },
   {
@@ -115,6 +128,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -123,6 +137,7 @@ export const Routes = [
     auth: true,
     controller: EmployeeController,
     action: "getTicket",
+    type: "employee",
     validation: [],
   },
   {
@@ -131,6 +146,7 @@ export const Routes = [
     auth: true,
     controller: EmployeeController,
     action: "getTicketInMyName",
+    type: "employee",
     validation: [],
   },
   {
@@ -139,6 +155,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getDeptWiseTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -147,6 +164,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getDeptWiseEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -155,6 +173,7 @@ export const Routes = [
     auth: true,
     controller: EmployeeController,
     action: "getTicketRaisedByMe",
+    type: "employee",
     validation: [],
   },
   {
@@ -163,6 +182,7 @@ export const Routes = [
     auth: false,
     controller: GeneralController,
     action: "sendQueryFeedback",
+    type: "general",
     validation: [],
   },
   {
@@ -171,6 +191,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "getQuery",
+    type: "admin",
     validation: [],
   },
   {
@@ -179,6 +200,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "approveDenyTicket",
+    type: "admin",
     validation: [],
   },
   {
@@ -187,6 +209,7 @@ export const Routes = [
     auth: true,
     controller: AdminController,
     action: "updateEmployee",
+    type: "admin",
     validation: [],
   },
   {
@@ -195,6 +218,7 @@ export const Routes = [
     auth: true,
     controller: EmployeeController,
     action: "closeTicket",
+    type: "employee",
     validation: [],
   },
 ];
