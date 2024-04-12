@@ -4,6 +4,7 @@ import { Routes } from "./routes.js";
 import { validationResult } from "express-validator";
 import { APP_PORT } from "./config.js";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 
 function handleError(err, req, res, next) {
   console.error(err.stack);
@@ -12,6 +13,7 @@ function handleError(err, req, res, next) {
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 Routes.forEach((route) => {
   app[route.method](
