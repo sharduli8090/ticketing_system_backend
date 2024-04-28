@@ -4,6 +4,7 @@ export class GeneralController {
     async sendQueryFeedback(request, response, next) {
         try {
             let { name, query } = request.body;
+            console.log(request.body);
             const data = await querydatacollection.insertOne({ name, query });
 
             response.json({

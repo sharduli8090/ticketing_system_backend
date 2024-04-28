@@ -150,7 +150,7 @@ export const Routes = [
     validation: [],
   },
   {
-    method: "get",
+    method: "post",
     route: "/api/admin/getdeptwiseticket",
     auth: true,
     controller: AdminController,
@@ -159,7 +159,7 @@ export const Routes = [
     validation: [],
   },
   {
-    method: "get",
+    method: "post",
     route: "/api/admin/getdeptwiseemployee",
     auth: true,
     controller: AdminController,
