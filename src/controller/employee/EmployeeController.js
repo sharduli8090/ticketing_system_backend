@@ -283,6 +283,7 @@ export class EmployeeController {
           $set: {
             ticketStatus: "closed",
             dateOfCompletion: formattedDate,
+            ticketComments: "Ticket closed by the creator",
           },
         }
       );
