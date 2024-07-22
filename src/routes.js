@@ -141,7 +141,7 @@ export const Routes = [
     validation: [],
   },
   {
-    method: "get",
+    method: "post",
     route: "/api/employee/getticketinmyname",
     auth: true,
     controller: EmployeeController,
@@ -168,7 +168,7 @@ export const Routes = [
     validation: [],
   },
   {
-    method: "get",
+    method: "post",
     route: "/api/employee/getticketraisedbyme",
     auth: true,
     controller: EmployeeController,
