@@ -404,7 +404,7 @@ export class EmployeeController {
           $set: {
             ticketStatus: ticketStatus,
             dateOfCompletion: formattedDate,
-            ticketComments: ticketCommentsFunc,
+            ticketComments: ticketComments || ticketCommentsFunc,
           },
         }
       );
