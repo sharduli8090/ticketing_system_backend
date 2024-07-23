@@ -11,6 +11,14 @@ export class EmployeeController {
         email: email,
       });
       if (data) {
+        if(data.password === ""){
+          response.json({
+            statuscode: 401,
+            message: "Password missing in database.",
+            data: "No data",
+          });
+          return;
+        }
         let isValidPassword = await argon2.verify(data.password, password);
         if (isValidPassword && data.email === email) {
           let token = jwt.sign({ id: data.id, type:"employee" }, process.env.EMPSECRET, {
