@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
-import { employeedatacollection, ticketdatacollection } from "../../config.js";
 import shortid from "shortid";
+import { employeedatacollection, ticketdatacollection } from "../../config.js";
 
 export class EmployeeController {
   async login(request, response, next) {
@@ -11,7 +11,7 @@ export class EmployeeController {
         email: email,
       });
       if (data) {
-        if(data.password === ""){
+        if (data.password === "") {
           response.json({
             statuscode: 401,
             message: "Password missing in database.",
@@ -21,9 +21,13 @@ export class EmployeeController {
         }
         let isValidPassword = await argon2.verify(data.password, password);
         if (isValidPassword && data.email === email) {
-          let token = jwt.sign({ id: data.id, type:"employee" }, process.env.EMPSECRET, {
-            expiresIn: "2h",
-          });
+          let token = jwt.sign(
+            { id: data.id, type: "employee" },
+            process.env.EMPSECRET,
+            {
+              expiresIn: "2h",
+            }
+          );
           response.json({
             statuscode: 200,
             message: "Login Successfull",

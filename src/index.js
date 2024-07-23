@@ -1,10 +1,10 @@
-import express from "express";
 import bodyParser from "body-parser";
-import { Routes } from "./routes.js";
-import { validationResult } from "express-validator";
-import { APP_PORT } from "./config.js";
-import jwt from "jsonwebtoken";
 import cors from "cors";
+import express from "express";
+import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
+import { APP_PORT } from "./config.js";
+import { Routes } from "./routes.js";
 
 function handleError(err, req, res, next) {
   console.error(err.stack);

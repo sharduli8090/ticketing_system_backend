@@ -3,7 +3,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 export const APP_PORT = process.env.PORT || 3000;
 
-const uri = process.env.url; 
+const uri = process.env.url;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -30,7 +30,7 @@ async function run() {
     // Connect the client to the server
     await client.connect();
     database = client.db("ticketing_system");
-    admindatacollection = database.collection("admin_data"); 
+    admindatacollection = database.collection("admin_data");
     employeedatacollection = database.collection("employee");
     ticketdatacollection = database.collection("ticket");
     querydatacollection = database.collection("query");
@@ -45,4 +45,10 @@ async function run() {
 
 run().catch(console.dir);
 
-export { database, admindatacollection, employeedatacollection, ticketdatacollection, querydatacollection};
+export {
+  admindatacollection,
+  database,
+  employeedatacollection,
+  querydatacollection,
+  ticketdatacollection,
+};

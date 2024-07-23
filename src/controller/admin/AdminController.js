@@ -1,11 +1,11 @@
+import jwt from "jsonwebtoken";
+import shortid from "shortid";
 import {
   admindatacollection,
   employeedatacollection,
+  querydatacollection,
   ticketdatacollection,
-  querydatacollection
 } from "../../config.js";
-import shortid from "shortid";
-import jwt from "jsonwebtoken";
 
 import argon2 from "argon2";
 
@@ -15,10 +15,22 @@ export class AdminController {
       let data = await admindatacollection.findOne();
       let password = request.body.password;
       let email = request.body.email;
-      if (data && data.email === email && data.password === password) {
-        let token = jwt.sign({ id: "admin", type: "admin" }, process.env.SECRET, {
-          expiresIn: "2h",
+      if (data.password === "") {
+        response.json({
+          statuscode: 401,
+          message: "Password missing in database.",
+          data: "No data",
         });
+        return;
+      }
+      if (data && data.email === email && data.password === password) {
+        let token = jwt.sign(
+          { id: "admin", type: "admin" },
+          process.env.SECRET,
+          {
+            expiresIn: "2h",
+          }
+        );
         response.json({
           statuscode: 200,
           message: "Login Successfull! Welcome Admin.",
@@ -448,6 +460,14 @@ export class AdminController {
         }
       }
       if (request.body.password) {
+        if (employee.password === "") {
+          response.json({
+            statuscode: 401,
+            message: "Password missing in database.",
+            data: "No data",
+          });
+          return;
+        }
         let isValidPassword = await argon2.verify(
           employee.password,
           request.body.password
@@ -503,25 +523,26 @@ export class AdminController {
     }
   }
 
-
   async getDeptWiseEmployee(request, response, next) {
     try {
       let dept = request.body.dept;
       dept = dept.toLowerCase();
-        if (
-          dept !== "hr" &&
-          dept !== "it" &&
-          dept !== "finance" &&
-          dept !== "admin"
-        ) {
-          response.json({
-            statuscode: 400,
-            message: "Department should be HR, IT, Finance or Admin",
-            data: "No Data",
-          });
-          return;
-        }
-      let data = await employeedatacollection.find({empDepartment:dept}).toArray();
+      if (
+        dept !== "hr" &&
+        dept !== "it" &&
+        dept !== "finance" &&
+        dept !== "admin"
+      ) {
+        response.json({
+          statuscode: 400,
+          message: "Department should be HR, IT, Finance or Admin",
+          data: "No Data",
+        });
+        return;
+      }
+      let data = await employeedatacollection
+        .find({ empDepartment: dept })
+        .toArray();
       let filteredData = data.map((employee) => {
         delete employee.password;
         delete employee._id;
@@ -543,21 +564,23 @@ export class AdminController {
     try {
       let dept = request.body.dept;
       dept = dept.toLowerCase();
-        if (
-          dept !== "hr" &&
-          dept !== "it" &&
-          dept !== "finance" &&
-          dept !== "admin"
-        ) {
-          response.json({
-            statuscode: 400,
-            message: "Department should be HR, IT, Finance or Admin",
-            data: "No Data",
-          });
-          return;
-        }
-      let data = await ticketdatacollection.find({ticketDepartment:dept}).toArray();
-      let filteredData = data.map((ticket) => { 
+      if (
+        dept !== "hr" &&
+        dept !== "it" &&
+        dept !== "finance" &&
+        dept !== "admin"
+      ) {
+        response.json({
+          statuscode: 400,
+          message: "Department should be HR, IT, Finance or Admin",
+          data: "No Data",
+        });
+        return;
+      }
+      let data = await ticketdatacollection
+        .find({ ticketDepartment: dept })
+        .toArray();
+      let filteredData = data.map((ticket) => {
         delete ticket._id;
         return ticket;
       });
@@ -573,7 +596,6 @@ export class AdminController {
     }
   }
 
-  
   async getQuery(request, response, next) {
     try {
       let data = await querydatacollection.find().toArray();
@@ -584,7 +606,7 @@ export class AdminController {
           data: "No Data",
         });
         return;
-      } 
+      }
       response.json({
         statuscode: 200,
         message: "Found",
@@ -596,5 +618,4 @@ export class AdminController {
       next(error); // Handle errors by passing them to the next middleware
     }
   }
-
 }
