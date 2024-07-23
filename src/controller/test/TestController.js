@@ -3,8 +3,8 @@ export class TestController {
     try {
       response.json({
         statuscode: 200,
-        message: "Test Connection Successfull",
-        data: "No data",
+        message: "Connection successful!",
+        data: "System check: All good in the hood!",
       });
       return;
     } catch (error) {

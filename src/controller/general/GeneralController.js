@@ -4,12 +4,11 @@ export class GeneralController {
   async sendQueryFeedback(request, response, next) {
     try {
       let { name, query } = request.body;
-      console.log(request.body);
       const data = await querydatacollection.insertOne({ name, query });
 
       response.json({
         statuscode: 200,
-        message: "Query/Feedback sent successfully",
+        message: "We've got your query/feedback. We'll be in touch soon!",
         data: data,
       });
     } catch (error) {

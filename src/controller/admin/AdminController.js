@@ -18,7 +18,8 @@ export class AdminController {
       if (data.password === "") {
         response.json({
           statuscode: 401,
-          message: "Password missing in database.",
+          message:
+            "Hey there! Looks like the admin password hasn't been set up yet. Let's get that sorted for top-notch security!",
           data: "No data",
         });
         return;
@@ -33,14 +34,15 @@ export class AdminController {
         );
         response.json({
           statuscode: 200,
-          message: "Login Successfull! Welcome Admin.",
+          message: "Welcome back, Admin! You're in. Time to work that magic.",
           data: { id: "admin", token: token },
         });
         return;
       } else {
         response.json({
           statuscode: 401,
-          message: "Invalid Credentials",
+          message:
+            "Hmm, those credentials don't quite match our records. Let's try that again.",
           data: "No Data",
         });
         return;
@@ -65,7 +67,8 @@ export class AdminController {
       ) {
         response.json({
           statuscode: 400,
-          message: "Missing required fields",
+          message:
+            "Whoops! We're missing some vital info to bring this new recruit onboard. Please fill in all the details.",
           data: "No Data",
         });
         return;
@@ -76,7 +79,8 @@ export class AdminController {
       if (existingEmployee) {
         response.json({
           statuscode: 400,
-          message: "Employee with this email already exists",
+          message:
+            "Hold on a sec! It seems we already have someone with that email. Double-check, please!",
           data: "No Data",
         });
         return;
@@ -91,7 +95,8 @@ export class AdminController {
       ) {
         response.json({
           statuscode: 400,
-          message: "Department should be HR, IT, Finance or Admin",
+          message:
+            "Oops, that department doesn't ring a bell. Please select from HR, IT, Finance, or Admin.",
           data: "No Data",
         });
         return;
@@ -125,7 +130,8 @@ export class AdminController {
       });
       response.json({
         statuscode: 200,
-        message: "Employee Created Successfully",
+        message:
+          "Woohoo! New team member successfully added. Let's give them a warm welcome!",
         data: { id: id, data },
       });
       return;
@@ -145,7 +151,7 @@ export class AdminController {
       });
       response.json({
         statuscode: 200,
-        message: "All Employees",
+        message: "Here's the A-Team!  All employee data, ready to roll.",
         data: filteredData,
       });
       return;
@@ -163,7 +169,8 @@ export class AdminController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Employee not found",
+          message:
+            "Hmm, we couldn't quite track down that employee. Perhaps they're on a secret mission?",
           data: "No Data",
         });
         return;
@@ -172,7 +179,7 @@ export class AdminController {
       delete data._id; // Remove _id using delete
       response.json({
         statuscode: 200,
-        message: "Employee Found",
+        message: `There they are! Employee data, right on the spot.`,
         data: data,
       });
       return;
@@ -188,7 +195,7 @@ export class AdminController {
       await ticketdatacollection.deleteMany();
       response.json({
         statuscode: 200,
-        message: "All Employees Deleted",
+        message: "Poof! All employee data has been successfully deleted.",
         data: data,
       });
       return;
@@ -207,7 +214,8 @@ export class AdminController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Employee not found",
+          message:
+            "That employee seems to have vanished! We couldn't find their record.",
           data: "No Data",
         });
         return;
@@ -219,7 +227,7 @@ export class AdminController {
       data = await employeedatacollection.deleteOne({ id: id });
       response.json({
         statuscode: 200,
-        message: "Employee Deleted",
+        message: `Employee record for ${data.empName} has been successfully deleted.`,
         data: data,
       });
       return;
@@ -239,7 +247,7 @@ export class AdminController {
       });
       response.json({
         statuscode: 200,
-        message: "All Tickets",
+        message: "Here's your to-do list!  All tickets, ready for action.",
         data: filteredData,
       });
       return;
@@ -257,7 +265,7 @@ export class AdminController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Ticket not found",
+          message: "We couldn't quite catch that ticket. Perhaps it flew away?",
           data: "No Data",
         });
         return;
@@ -265,7 +273,7 @@ export class AdminController {
       delete data._id;
       response.json({
         statuscode: 200,
-        message: "Ticket Found",
+        message: "Gotcha! Found that ticket! ",
         data: data,
       });
       return;
@@ -293,7 +301,7 @@ export class AdminController {
 
       response.json({
         statuscode: 200,
-        message: "All Tickets Deleted",
+        message: "Presto! All tickets have vanished!",
         data: data,
       });
       return;
@@ -312,7 +320,8 @@ export class AdminController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Ticket not found",
+          message:
+            "That ticket seems to have disappeared!  We couldn't find it.",
           data: "No Data",
         });
         return;
@@ -335,7 +344,7 @@ export class AdminController {
       data = await ticketdatacollection.deleteOne({ id: ticketId });
       response.json({
         statuscode: 200,
-        message: "Ticket Deleted",
+        message: "Consider it done! Ticket deleted.",
         data: data,
       });
       return;
@@ -355,7 +364,8 @@ export class AdminController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Ticket not found",
+          message:
+            "Hmm, that ticket seems to be playing hide-and-seek. We couldn't find it.",
           data: "No Data",
         });
         return;
@@ -363,7 +373,8 @@ export class AdminController {
       if (data.ticketStatus === "approved") {
         response.json({
           statuscode: 400,
-          message: "Ticket already approved",
+          message:
+            "No need to approve this one twice! It's already been approved.",
           data: "No Data",
         });
         return;
@@ -371,7 +382,7 @@ export class AdminController {
       if (data.ticketStatus === "denied") {
         response.json({
           statuscode: 400,
-          message: "Ticket already denied",
+          message: "This ticket has already been denied.",
           data: "No Data",
         });
         return;
@@ -379,14 +390,16 @@ export class AdminController {
       if (!ticketStatus) {
         response.json({
           statuscode: 400,
-          message: "Missing required fields",
+          message:
+            "What's the verdict? Please tell us whether to 'approve' or 'deny' the ticket. ",
           data: "No Data",
         });
       }
       if (ticketStatus !== "approved" && ticketStatus !== "denied") {
         response.json({
           statuscode: 400,
-          message: "Invalid ticket status",
+          message:
+            "Oops, that's not quite a valid status. Please choose either 'approved' or 'denied.'",
           data: "No Data",
         });
         return;
@@ -395,7 +408,8 @@ export class AdminController {
       if (ticketStatus === "denied" && !ticketComments) {
         response.json({
           statuscode: 400,
-          message: "Missing ticket comments",
+          message:
+            "A little feedback please! Add a comment explaining why the ticket is being denied.",
           data: "No Data",
         });
         return;
@@ -424,7 +438,7 @@ export class AdminController {
       );
       response.json({
         statuscode: 200,
-        message: "Ticket updated",
+        message: `Ticket ${ticketStatus} successfully!`,
         data: updatedData,
       });
       return;
@@ -441,7 +455,8 @@ export class AdminController {
       if (!employee) {
         response.json({
           statuscode: 400,
-          message: "Employee not found",
+          message:
+            "We couldn't locate that employee in our system. Double-check and try again.",
           data: "No Data",
         });
         return;
@@ -453,7 +468,8 @@ export class AdminController {
         if (existingEmployee && existingEmployee.id !== empId) {
           response.json({
             statuscode: 400,
-            message: "Employee with this email already exists",
+            message:
+              "Oops, someone's already rocking that email address. Please choose another one.",
             data: "No Data",
           });
           return;
@@ -463,7 +479,8 @@ export class AdminController {
         if (employee.password === "") {
           response.json({
             statuscode: 401,
-            message: "Password missing in database.",
+            message:
+              "Looks like there's no password set up yet. Let's create a new one!",
             data: "No data",
           });
           return;
@@ -478,7 +495,8 @@ export class AdminController {
         } else {
           response.json({
             statuscode: 400,
-            message: "Old password is equal to new password",
+            message:
+              "Hold on! The new password can't be the same as the old one. Let's mix things up!",
             data: "No Data",
           });
           return;
@@ -495,12 +513,14 @@ export class AdminController {
         ) {
           response.json({
             statuscode: 400,
-            message: "Department should be HR, IT, Finance or Admin",
+            message:
+              "Which department is it? Please select from HR, IT, Finance, or Admin.",
             data: "No Data",
           });
           return;
+        } else {
+          request.body.empDepartment = dept;
         }
-        request.body.empDepartment = dept;
       }
       if (request.body.empPosition) {
         request.body.empPosition = request.body.empPosition.toLowerCase();
@@ -513,7 +533,7 @@ export class AdminController {
 
       response.json({
         statuscode: 200,
-        message: "Profile updated successfully",
+        message: "Profile updated! Looking sharp! ",
         data: result,
       });
       return;
@@ -535,7 +555,8 @@ export class AdminController {
       ) {
         response.json({
           statuscode: 400,
-          message: "Department should be HR, IT, Finance or Admin",
+          message:
+            "Hmm, that department name seems a bit off. Please double-check and try again.",
           data: "No Data",
         });
         return;
@@ -550,7 +571,7 @@ export class AdminController {
       });
       response.json({
         statuscode: 200,
-        message: "All Employees department wise",
+        message: "Here's the dream team for that department!",
         data: filteredData,
       });
       return;
@@ -572,7 +593,7 @@ export class AdminController {
       ) {
         response.json({
           statuscode: 400,
-          message: "Department should be HR, IT, Finance or Admin",
+          message: "Oops, double-check that department name and try again.",
           data: "No Data",
         });
         return;
@@ -586,7 +607,7 @@ export class AdminController {
       });
       response.json({
         statuscode: 200,
-        message: "All Tickets department wise",
+        message: "Tickets, sorted by department, coming right up!",
         data: filteredData,
       });
       return;
@@ -602,14 +623,16 @@ export class AdminController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Queries/Feedbacks not found",
+          message:
+            "It's quiet on the feedback front! No queries or feedback yet.",
           data: "No Data",
         });
         return;
       }
       response.json({
         statuscode: 200,
-        message: "Found",
+        message:
+          "Here's what everyone's saying! All queries and feedback, ready for review.",
         data: data,
       });
       return;

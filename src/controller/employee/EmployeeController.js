@@ -14,7 +14,8 @@ export class EmployeeController {
         if (data.password === "") {
           response.json({
             statuscode: 401,
-            message: "Password missing in database.",
+            message:
+              "Psst! Looks like your account needs a little setup.  Contact an admin to set your password.",
             data: "No data",
           });
           return;
@@ -30,7 +31,7 @@ export class EmployeeController {
           );
           response.json({
             statuscode: 200,
-            message: "Login Successfull",
+            message: `Welcome back, ${data.empName}! Ready to dive in?`,
             data: {
               id: data.id,
               token: token,
@@ -40,7 +41,8 @@ export class EmployeeController {
         } else {
           response.json({
             statuscode: 401,
-            message: "Invalid Credentials",
+            message:
+              "Hmm, those credentials aren't quite clicking.  Try again, or maybe hit 'Forgot Password'? ",
             data: "No data",
           });
           return;
@@ -48,7 +50,8 @@ export class EmployeeController {
       } else {
         response.json({
           statuscode: 401,
-          message: "Invalid Credentials",
+          message:
+            "We couldn't find an account with those details. Double-check and try again.",
           data: "No data",
         });
         return;
@@ -67,7 +70,8 @@ export class EmployeeController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Employee not found",
+          message:
+            "We couldn't track down an employee with that ID. Maybe they're on a secret mission?",
           data: "No Data",
         });
         return;
@@ -76,7 +80,7 @@ export class EmployeeController {
       delete data._id; // Remove _id using delete
       response.json({
         statuscode: 200,
-        message: "Employee Found",
+        message: `Bingo! Here's the intel on ${data.empName}.`,
         data: data,
       });
       return;
@@ -95,7 +99,8 @@ export class EmployeeController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Ticket not found",
+          message:
+            "That ticket seems to have gone off the radar. Double-check the ID and try again.",
           data: "No Data",
         });
         return;
@@ -104,7 +109,8 @@ export class EmployeeController {
       if (!employee) {
         response.json({
           statuscode: 404,
-          message: "Employee not found",
+          message:
+            "Hmm, we're having trouble finding your employee record.  Please try again.",
           data: "No Data",
         });
         return;
@@ -115,7 +121,7 @@ export class EmployeeController {
       ) {
         response.json({
           statuscode: 400,
-          message: "You are not authorized to view this ticket",
+          message: "Hold on there!  You're not authorized to view this ticket.",
           data: "No Data",
         });
         return;
@@ -123,7 +129,7 @@ export class EmployeeController {
       delete data._id; // Remove _id using delete
       response.json({
         statuscode: 200,
-        message: "Ticket Found",
+        message: "Here are the ticket details you requested.",
         data: data,
       });
       return;
@@ -140,7 +146,8 @@ export class EmployeeController {
       if (!ticketName || !ticketDescription || !empId || !ticketDepartment) {
         response.json({
           statuscode: 400,
-          message: "Missing required fields",
+          message:
+            "Whoa there!  It looks like you missed a few fields.  Please fill in all the details.",
           data: "No data",
         });
         return;
@@ -149,7 +156,8 @@ export class EmployeeController {
       if (!employee) {
         response.json({
           statuscode: 400,
-          message: "Employee not found",
+          message:
+            "We couldn't quite catch your employee record. Could you try again?",
           data: "No data",
         });
         return;
@@ -163,7 +171,8 @@ export class EmployeeController {
       ) {
         response.json({
           statuscode: 400,
-          message: "Department should be HR, IT, Finance or Admin",
+          message:
+            "Which department is this for? Please choose from HR, IT, Finance, or Admin.",
           data: "No data",
         });
         return;
@@ -220,7 +229,7 @@ export class EmployeeController {
 
       response.json({
         statuscode: 200,
-        message: "Ticket created successfully",
+        message: "Ticket created!  We'll be in touch soon.",
         data: { id: id, data: result },
       });
       return;
@@ -238,7 +247,8 @@ export class EmployeeController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Ticket not found",
+          message:
+            "Hmm, we couldn't find a ticket with that ID.  Please try again.",
           data: "No data",
         });
         return;
@@ -246,7 +256,7 @@ export class EmployeeController {
       if (!empId) {
         response.json({
           statuscode: 400,
-          message: "Missing required fields",
+          message: "Please provide your employee ID to proceed.",
           data: "No data",
         });
         return;
@@ -255,7 +265,8 @@ export class EmployeeController {
       if (!employee) {
         response.json({
           statuscode: 400,
-          message: "Employee not found",
+          message:
+            "We're having a little trouble finding your employee record. Try again in a bit?",
           data: "No data",
         });
         return;
@@ -264,7 +275,7 @@ export class EmployeeController {
       if (data.ticketRaisedById !== request.body.empId) {
         response.json({
           statuscode: 400,
-          message: "You are not authorized to close this ticket",
+          message: "Hold on a sec! You're not authorized to close this ticket.",
           data: "No data",
         });
         return;
@@ -276,7 +287,7 @@ export class EmployeeController {
       ) {
         response.json({
           statuscode: 400,
-          message: "Ticket already closed",
+          message: "Looks like this ticket has already been closed.",
           data: "No data",
         });
         return;
@@ -302,7 +313,7 @@ export class EmployeeController {
 
       response.json({
         statuscode: 200,
-        message: "Ticket closed successfully",
+        message: "Ticket closed! Thanks for letting us know.",
         data: result,
       });
       return;
@@ -321,7 +332,7 @@ export class EmployeeController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Ticket not found",
+          message: "Hmm, we can't seem to find that ticket.  Try again?",
           data: "No data",
         });
         return;
@@ -331,7 +342,8 @@ export class EmployeeController {
       if (!employee) {
         response.json({
           statuscode: 400,
-          message: "Employee not found",
+          message:
+            "We're having a bit of trouble locating your employee record.  Hang tight!",
           data: "No data",
         });
         return;
@@ -339,7 +351,8 @@ export class EmployeeController {
       if (!ticketStatus) {
         response.json({
           statuscode: 400,
-          message: "Missing required fields",
+          message:
+            "Should we approve or deny? Please specify the ticket status.",
           data: "No data",
         });
         return;
@@ -347,7 +360,8 @@ export class EmployeeController {
       if (ticketStatus !== "approved" && ticketStatus !== "denied") {
         response.json({
           statuscode: 400,
-          message: "Invalid ticket status",
+          message:
+            "Oops, looks like that's not a valid status.  Use 'approved' or 'denied'.",
           data: "No data",
         });
         return;
@@ -355,7 +369,8 @@ export class EmployeeController {
       if (ticketStatus === "denied" && !ticketComments) {
         response.json({
           statuscode: 400,
-          message: "Missing ticket comments",
+          message:
+            "Could you give us a bit more context? Please add a comment explaining why the ticket is being denied.",
           data: "No data",
         });
         return;
@@ -367,7 +382,8 @@ export class EmployeeController {
       if (empId !== data.ticketAssignedToId) {
         response.json({
           statuscode: 400,
-          message: "You are not authorized to approve/deny this ticket",
+          message:
+            "Hold on there! You're not authorized to approve or deny this ticket.",
           data: "No data",
         });
         return;
@@ -376,7 +392,8 @@ export class EmployeeController {
       if (data.status === "approved") {
         response.json({
           statuscode: 400,
-          message: "Ticket already approved",
+          message:
+            "This ticket's already been approved! No need to do it again.",
           data: "No data",
         });
         return;
@@ -384,7 +401,7 @@ export class EmployeeController {
       if (data.status === "denied") {
         response.json({
           statuscode: 400,
-          message: "Ticket already denied",
+          message: "This ticket's already been denied.",
           data: "No data",
         });
         return;
@@ -411,7 +428,7 @@ export class EmployeeController {
 
       response.json({
         statuscode: 200,
-        message: "Ticket updated",
+        message: "Ticket updated! Thanks for the quick action.",
         data: updatedData,
       });
       return;
@@ -428,7 +445,8 @@ export class EmployeeController {
       if (!employee) {
         response.json({
           statuscode: 400,
-          message: "Employee not found",
+          message:
+            "We couldn't locate your employee record. Could you try again?",
           data: "No data",
         });
         return;
@@ -441,7 +459,8 @@ export class EmployeeController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Tickets not found",
+          message:
+            "Looks like you have a clean slate!  No tickets assigned to you right now.",
           data: "No data",
         });
         return;
@@ -454,7 +473,7 @@ export class EmployeeController {
 
       response.json({
         statuscode: 200,
-        message: "Tickets found",
+        message: "Here are the tickets waiting for your expertise.",
         data: filteredData,
       });
       return;
@@ -471,7 +490,8 @@ export class EmployeeController {
       if (!employee) {
         response.json({
           statuscode: 400,
-          message: "Employee not found",
+          message:
+            "We're having some trouble finding your employee record. Could you try again?",
           data: "No data",
         });
         return;
@@ -484,7 +504,8 @@ export class EmployeeController {
       if (!data) {
         response.json({
           statuscode: 404,
-          message: "Tickets not found",
+          message:
+            "Looks like you haven't raised any tickets yet.  If you need anything, don't hesitate to create one!",
           data: "No data",
         });
         return;
@@ -496,7 +517,7 @@ export class EmployeeController {
 
       response.json({
         statuscode: 200,
-        message: "Tickets found",
+        message: "Here's a recap of the tickets you've raised.",
         data: filteredData,
       });
       return;
