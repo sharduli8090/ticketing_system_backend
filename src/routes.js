@@ -195,6 +195,15 @@ export const Routes = [
   },
   {
     method: "put",
+    route: "/api/employee/approvedenyticket/:id",
+    auth: true,
+    controller: EmployeeController,
+    action: "approveDenyTicket",
+    type: "employee",
+    validation: [],
+  },
+  {
+    method: "put",
     route: "/api/admin/approvedenyticket/:id",
     auth: true,
     controller: AdminController,
