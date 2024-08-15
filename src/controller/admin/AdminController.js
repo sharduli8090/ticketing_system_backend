@@ -151,7 +151,7 @@ export class AdminController {
       });
       response.json({
         statuscode: 200,
-        message: "Here's the A-Team!  All employee data, ready to roll.",
+        message: "Here's the A-Team! All employee data, ready to roll.",
         data: filteredData,
       });
       return;
@@ -227,7 +227,7 @@ export class AdminController {
       data = await employeedatacollection.deleteOne({ id: id });
       response.json({
         statuscode: 200,
-        message: `Employee record for ${data.empName} has been successfully deleted.`,
+        message: `Employee record for ${data} has been successfully deleted.`,
         data: data,
       });
       return;
