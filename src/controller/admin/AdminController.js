@@ -224,11 +224,11 @@ export class AdminController {
       if (ticketIds.length > 0) {
         await ticketdatacollection.deleteMany({ id: { $in: ticketIds } });
       }
-      const deldata = await employeedatacollection.deleteOne({ id: id });
+      data = await employeedatacollection.deleteOne({ id: id });
       response.json({
         statuscode: 200,
-        message: `Employee record for ${deldata.empName} has been successfully deleted.`,
-        data: deldata,
+        message: `Employee record has been successfully deleted.`,
+        data: data,
       });
       return;
     } catch (error) {
