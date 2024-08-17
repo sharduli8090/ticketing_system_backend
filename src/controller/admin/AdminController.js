@@ -160,7 +160,46 @@ export class AdminController {
       next(error); // Handle errors by passing them to the next middleware
     }
   }
-
+  async getAllEmployeePagination(request, response, next) {
+    try {
+      let { startIndex, endIndex, limit } = request.body;
+  
+      // Fetch all employee data
+      let data = await employeedatacollection.find().toArray();
+  
+      // Filter out sensitive information
+      let filteredData = data.map((employee) => {
+        delete employee.password;
+        delete employee._id;
+        return employee;
+      });
+  
+      // If endIndex exceeds the length of the data, adjust it
+      if (filteredData.length < endIndex) {
+        endIndex = filteredData.length;
+      }
+  
+      // Calculate the pagination limit if endIndex is greater than startIndex + limit
+      if (endIndex - startIndex > limit) {
+        endIndex = startIndex + limit;
+      }
+  
+      // Slice the data to get the paginated result
+      let paginatedData = filteredData.slice(startIndex, endIndex);
+  
+      // Return the paginated data
+      response.json({
+        statuscode: 200,
+        message: "Here's the A-Team! All employee data, ready to roll.",
+        data: paginatedData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+  
   async getEmployee(request, response, next) {
     try {
       let data = await employeedatacollection.findOne({

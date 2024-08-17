@@ -41,6 +41,15 @@ export const Routes = [
     validation: [],
   },
   {
+    method: "post",
+    route: "/api/admin/getallemployeepagination",
+    auth: true,
+    controller: AdminController,
+    action: "getAllEmployeePagination",
+    type: "admin",
+    validation: [],
+  },
+  {
     method: "delete",
     route: "/api/admin/deleteallemployee",
     auth: true,
