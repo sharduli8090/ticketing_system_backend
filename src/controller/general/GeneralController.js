@@ -4,8 +4,10 @@ export class GeneralController {
   async sendQueryFeedback(request, response, next) {
     try {
       let { name, query } = request.body;
-      const data = await querydatacollection.insertOne({ name, query });
 
+      let id = shortid.generate();
+      const data = await querydatacollection.insertOne({ id,name, query });
+ 
       response.json({
         statuscode: 200,
         message: "We've got your query/feedback. We'll be in touch soon!",

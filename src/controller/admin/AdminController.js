@@ -163,30 +163,46 @@ export class AdminController {
   async getAllEmployeePagination(request, response, next) {
     try {
       let { startIndex, endIndex, limit } = request.body;
-  
+      if (endIndex < startIndex) {
+        response.json({
+          statuscode: 400,
+          message: "End index should be greater than start index",
+          data: "No Data",
+        });
+        return;
+      }
+      if (limit !== endIndex - startIndex) {
+        response.json({
+          statuscode: 400,
+          message: "Limit should be equal to endIndex - startIndex",
+          data: "No Data",
+        });
+        return;
+      }
+
       // Fetch all employee data
       let data = await employeedatacollection.find().toArray();
-  
+
       // Filter out sensitive information
       let filteredData = data.map((employee) => {
         delete employee.password;
         delete employee._id;
         return employee;
       });
-  
+
       // If endIndex exceeds the length of the data, adjust it
       if (filteredData.length < endIndex) {
         endIndex = filteredData.length;
       }
-  
+
       // Calculate the pagination limit if endIndex is greater than startIndex + limit
       if (endIndex - startIndex > limit) {
         endIndex = startIndex + limit;
       }
-  
+
       // Slice the data to get the paginated result
       let paginatedData = filteredData.slice(startIndex, endIndex);
-  
+
       // Return the paginated data
       response.json({
         statuscode: 200,
@@ -199,7 +215,7 @@ export class AdminController {
       next(error); // Handle errors by passing them to the next middleware
     }
   }
-  
+
   async getEmployee(request, response, next) {
     try {
       let data = await employeedatacollection.findOne({
@@ -288,6 +304,62 @@ export class AdminController {
         statuscode: 200,
         message: "Here's your to-do list!  All tickets, ready for action.",
         data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  async getAllTicketPagination(request, response, next) {
+    try {
+      let { startIndex, endIndex, limit } = request.body;
+      if (endIndex < startIndex) {
+        response.json({
+          statuscode: 400,
+
+          message: "End index should be greater than start index",
+          data: "No Data",
+        });
+        return;
+      }
+      if (limit !== endIndex - startIndex) {
+        response.json({
+          statuscode: 400,
+          message: "Limit should be equal to endIndex - startIndex",
+          data: "No Data",
+        });
+        return;
+      }
+
+      // Fetch all ticket data
+      let data = await ticketdatacollection.find().toArray();
+
+      // Filter out sensitive information
+      let filteredData = data.map((ticket) => {
+        delete ticket._id;
+        return ticket;
+      });
+
+      // If endIndex exceeds the length of the data, adjust it
+      if (filteredData.length < endIndex) {
+        endIndex = filteredData.length;
+      }
+
+      // Calculate the pagination limit if endIndex is greater than startIndex + limit
+      if (endIndex - startIndex > limit) {
+        endIndex = startIndex + limit;
+      }
+
+      // Slice the data to get the paginated result
+      let paginatedData = filteredData.slice(startIndex, endIndex);
+
+      // Return the paginated data
+      response.json({
+        statuscode: 200,
+        message: "Here's the to-do list! All ticket data, ready for action.",
+        data: paginatedData,
       });
       return;
     } catch (error) {
@@ -673,6 +745,83 @@ export class AdminController {
         message:
           "Here's what everyone's saying! All queries and feedback, ready for review.",
         data: data,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  //get one query
+  async getOneQuery(request, response, next) {
+    try {
+      let data = await querydatacollection.findOne({
+        id: request.params.id,
+      });
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message:
+            "Hmm, that query seems to be playing hide-and-seek. We couldn't find it.",
+          data: "No Data",
+        });
+        return;
+      }
+      response.json({
+        statuscode: 200,
+        message: "Gotcha! Found that query!",
+        data: data,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error);
+    }
+  }
+
+  async getQueryPagination(request, response, next) {
+    try {
+      let { startIndex, endIndex, limit } = request.body;
+      if (endIndex < startIndex) {
+        response.json({
+          statuscode: 400,
+          message: "End index should be greater than start index",
+          data: "No Data",
+        });
+        return;
+      }
+      if (limit !== endIndex - startIndex) {
+        response.json({
+          statuscode: 400,
+          message: "Limit should be equal to endIndex - startIndex",
+          data: "No Data",
+        });
+        return;
+      }
+
+      // Fetch all query data
+      let data = await querydatacollection.find().toArray();
+
+      // If endIndex exceeds the length of the data, adjust it
+      if (data.length < endIndex) {
+        endIndex = data.length;
+      }
+
+      // Calculate the pagination limit if endIndex is greater than startIndex + limit
+      if (endIndex - startIndex > limit) {
+        endIndex = startIndex + limit;
+      }
+
+      // Slice the data to get the paginated result
+      let paginatedData = data.slice(startIndex, endIndex);
+
+      // Return the paginated data
+      response.json({
+        statuscode: 200,
+        message:
+          "Here's what everyone's saying! All queries and feedback, ready for review.",
+        data: paginatedData,
       });
       return;
     } catch (error) {
