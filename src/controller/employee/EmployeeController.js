@@ -437,6 +437,53 @@ export class EmployeeController {
       next(error); // Handle errors by passing them to the next middleware
     }
   }
+  // get ticket in my name dept wise
+  async getTicketInMyNameDeptWise(request, response, next) {
+    try {
+      let empId = request.body.empId;
+      let dept = request.body.dept;
+      let employee = await employeedatacollection.findOne({ id: empId });
+      if (!employee) {
+        response.json({
+          statuscode: 400,
+          message:
+            "We couldn't locate your employee record. Could you try again?",
+          data: "No data",
+        });
+        return;
+      }
+      let data = await ticketdatacollection
+        .find({
+          ticketAssignedToId: empId,
+          ticketDepartment: dept,
+        })
+        .toArray();
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message:
+            "Looks like you have a clean slate!  No tickets assigned to you right now.",
+          data: "No data",
+        });
+        return;
+      }
+
+      const filteredData = data.map((item) => {
+        delete item._id;
+        return item;
+      });
+
+      response.json({
+        statuscode: 200,
+        message: "Here are the tickets waiting for your expertise.",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
 
   async getTicketInMyName(request, response, next) {
     try {
@@ -485,15 +532,15 @@ export class EmployeeController {
 
   //pagination for get ticket in my name
   async getTicketInMyNamePagination(request, response, next) {
-    try{
+    try {
       let { startIndex, endIndex, limit } = request.body;
-      if(endIndex < startIndex){
+      if (endIndex < startIndex) {
         response.json({
           statuscode: 400,
           message: "End index should be greater than start index",
           data: "No Data",
         });
-      return;
+        return;
       }
       if (limit !== endIndex - startIndex) {
         response.json({
@@ -521,11 +568,9 @@ export class EmployeeController {
         })
         .toArray();
       if (!data) {
-
         response.json({
           statuscode: 404,
           message:
-
             "Looks like you have a clean slate!  No tickets assigned to you right now.",
           data: "No data",
         });
@@ -534,8 +579,7 @@ export class EmployeeController {
       const filteredData = data.map((item) => {
         delete item._id;
         return item;
-      }
-      );
+      });
 
       // If endIndex exceeds the length of the data, adjust it
       if (filteredData.length < endIndex) {
@@ -557,27 +601,167 @@ export class EmployeeController {
         data: paginatedData,
       });
       return;
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error fetching data:", error);
       next(error); // Handle errors by passing them to the next middleware
     }
   }
 
-    
+  // get ticket in my name status wise
+  async getTicketInMyNameStatusWise(request, response, next) {
+    try {
+      let empId = request.body.empId;
+      let status = request.body.status;
+      let employee = await employeedatacollection.findOne({ id: empId });
+      if (!employee) {
+        response.json({
+          statuscode: 400,
+          message:
+            "We couldn't locate your employee record. Could you try again?",
+          data: "No data",
+        });
+        return;
+      }
+      let data = await ticketdatacollection.find({
+        ticketAssignedToId: empId,
+        ticketStatus: status,
+      });
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message:
+            "Looks like you have a clean slate!  No tickets assigned to you right now.",
+          data: "No data",
+        });
+        return;
+      }
+
+      const filteredData = data.map((item) => {
+        delete item._id;
+        return item;
+      }
+      );
+
+      response.json({
+        statuscode: 200,
+        message: "Here are the tickets waiting for your expertise.",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error);
+    }
+  }
+  
+
+  //get ticket raised by me ststus wise
+  async getTicketRaisedByMeStatusWise(request, response, next) {
+    try {
+      let empId = request.body.empId;
+      let status = request.body.status;
+      let employee = await employeedatacollection.findOne({ id: empId });
+      if (!employee) {
+        response.json({
+          statuscode: 400,
+          message:
+            "We couldn't locate your employee record. Could you try again?",
+          data: "No data",
+        });
+        return;
+      }
+      let data = await ticketdatacollection
+        .find({
+          ticketRaisedById: empId,
+          ticketStatus: status,
+        })
+        .toArray();
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message:
+            "Looks like you haven't raised any tickets with that status.  If you need anything, don't hesitate to create one!",
+          data: "No data",
+        });
+        return;
+      }
+
+      const filteredData = data.map((item) => {
+        delete item._id;
+        return item;
+      });
+
+      response.json({
+        statuscode: 200,
+        message: "Here's a recap of the tickets you've raised.",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  // get ticket raised by me dept wise
+  async getTicketRaisedByMeDeptWise(request, response, next) {
+    try {
+      let empId = request.body.empId;
+      let dept = request.body.dept;
+      let employee = await employeedatacollection.findOne({ id: empId });
+      if (!employee) {
+        response.json({
+          statuscode: 400,
+          message:
+            "We couldn't locate your employee record. Could you try again?",
+          data: "No data",
+        });
+        return;
+      }
+      let data = await ticketdatacollection
+        .find({
+          ticketRaisedById: empId,
+          ticketDepartment: dept,
+        })
+        .toArray();
+      if (!data) {
+        response.json({
+          statuscode: 404,
+          message:
+            "Looks like you haven't raised any tickets yet.  If you need anything, don't hesitate to create one!",
+          data: "No data",
+        });
+        return;
+      }
+
+      const filteredData = data.map((item) => {
+        delete item._id;
+        return item;
+      });
+
+      response.json({
+        statuscode: 200,
+        message: "Here's a recap of the tickets you've raised.",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error); // Handle errors by passing them to the next middleware
+    }
+  }
 
   // pagination for tickets raised by the employee
   async getTicketRaisedByMePagination(request, response, next) {
-    try{
+    try {
       let { startIndex, endIndex, limit } = request.body;
-      if(endIndex < startIndex){
+      if (endIndex < startIndex) {
         response.json({
           statuscode: 400,
           message: "End index should be greater than start index",
           data: "No Data",
         });
-      return;
+        return;
       }
       if (limit !== endIndex - startIndex) {
         response.json({
@@ -618,29 +802,27 @@ export class EmployeeController {
         return item;
       });
 
-     // If endIndex exceeds the length of the data, adjust it
-     if (filteredData.length < endIndex) {
-      endIndex = filteredData.length;
-    }
+      // If endIndex exceeds the length of the data, adjust it
+      if (filteredData.length < endIndex) {
+        endIndex = filteredData.length;
+      }
 
-    // Calculate the pagination limit if endIndex is greater than startIndex + limit
-    if (endIndex - startIndex > limit) {
-      endIndex = startIndex + limit;
-    }
+      // Calculate the pagination limit if endIndex is greater than startIndex + limit
+      if (endIndex - startIndex > limit) {
+        endIndex = startIndex + limit;
+      }
 
-    // Slice the data to get the paginated result
-    let paginatedData = filteredData.slice(startIndex, endIndex);
+      // Slice the data to get the paginated result
+      let paginatedData = filteredData.slice(startIndex, endIndex);
 
-    // Return the paginated data
-    response.json({
-      statuscode: 200,
-      message: "Here's a recap of the tickets you've raised.",
-      data: paginatedData,
-    });
-    return;
-
-    }
-    catch (error) {
+      // Return the paginated data
+      response.json({
+        statuscode: 200,
+        message: "Here's a recap of the tickets you've raised.",
+        data: paginatedData,
+      });
+      return;
+    } catch (error) {
       console.error("Error fetching data:", error);
       next(error); // Handle errors by passing them to the next middleware
     }

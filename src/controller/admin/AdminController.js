@@ -692,6 +692,66 @@ export class AdminController {
     }
   }
 
+  //get position wise employee
+  async getPositionWiseEmployee(request, response, next) {
+    try {
+      let position = request.body.position;
+      position = position.toLowerCase();
+      let data = await employeedatacollection
+        .find({ empPosition: position })
+        .toArray();
+      let filteredData = data.map((employee) => {
+        delete employee.password;
+        delete employee._id;
+        return employee;
+      });
+      response.json({
+        statuscode: 200,
+        message: "Here's the dream team for that position!",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error);
+    }
+  }
+
+  //get employee by gender
+  async getGenderWiseEmployee(request, response, next) {
+    try {
+      let gender = request.body.gender;
+      gender = gender.toLowerCase();
+      if(gender !== "female" && gender !== "male" && gender !== "other") {
+        response.json({
+          statuscode: 400,
+          message : "Oops, that gender doesn't ring a bell. Please choose from 'female' ,  'male' or 'other'.",
+          data: "No Data",
+        });
+        return;
+      }
+      let data = await employeedatacollection.find({ empGender:gender }).toArray();
+      let filteredData = data.map((employee) => {
+        delete employee.password;
+        delete employee._id;
+        return employee;
+      });
+      response.json({
+        statuscode: 200,
+        message: "Here's the dream team!",
+        data: filteredData,
+      });
+      return;
+    }
+    catch (error) {
+      console.error("Error fetching data:", error);
+      next(error);
+    }
+  }
+  
+
+
+
   async getDeptWiseTicket(request, response, next) {
     try {
       let dept = request.body.dept;
@@ -725,6 +785,36 @@ export class AdminController {
     } catch (error) {
       console.error("Error fetching data:", error);
       next(error); // Handle errors by passing them to the next middleware
+    }
+  }
+
+  // getstatus wise ticket
+  async getStatusWiseTicket(request, response, next) {
+    try {
+      let status = request.body.status;
+      if (status !== "approved" && status !== "denied" && status !== "closed") {
+        response.json({
+          statuscode: 400,
+          message:
+            "Hmm, that status doesn't ring a bell. Please choose from 'approved', 'denied', or 'closed'.",
+          data: "No Data",
+        });
+        return;
+      }
+      let data = await ticketdatacollection.find({ ticketStatus: status }).toArray();
+      let filteredData = data.map((ticket) => {
+        delete ticket._id;
+        return ticket;
+      });
+      response.json({
+        statuscode: 200,
+        message: "Tickets, sorted by status, coming right up!",
+        data: filteredData,
+      });
+      return;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      next(error);
     }
   }
 
