@@ -259,7 +259,7 @@ export const Routes = [
   },
   {
     method: "post",
-    route: "/api/employee/getticketinmynamedeptwise",
+    route: "/api/employee/getticketinmynamestatuswise",
     auth: true,
     controller: EmployeeController,
     action: "getTicketInMyNameStatusWise",
